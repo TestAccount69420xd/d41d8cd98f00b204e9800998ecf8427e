@@ -2,7 +2,7 @@
     AntHaxx V6 Official
     
     Game: Ant Life V2 (https://www.roblox.com/games/2628115891)
-    AntHaxx Loader: loadstring(game:HttpGet('https://pastebin.com/raw/9MWb13Yz'))()
+    AntHaxx Loader: loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/AHV6'))()
     Discord: https://discord.gg/ancT7xZ9Ty
 ]]
 
@@ -12,7 +12,7 @@ if game.GameId == 943242049 then else return end
 local UIConfig = {
     WindowName = 'AntHaxx V6 | Ant Life V2',
 	Color = Color3.fromRGB(255, 0, 0),
-	Keybind = Enum.KeyCode.One
+	Keybind = Enum.KeyCode.Semicolon
 }
 
 local UILibrary = loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/bracketUI_backup'))()
