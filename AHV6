@@ -2,7 +2,7 @@
     AntHaxx V6 Official
     
     Game: Ant Life V2 (https://www.roblox.com/games/2628115891)
-    AntHaxx Loader: loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/AHV6'))()
+    AntHaxx Loader: loadstring(game:HttpGet('https://pastebin.com/raw/9MWb13Yz'))()
     Discord: https://discord.gg/ancT7xZ9Ty
 ]]
 
@@ -79,6 +79,24 @@ end
 local function CreateESP(model, color)
     if not model.Torso:FindFirstChild('ESP') then
         for i, v in pairs(model:GetDescendants()) do
+            if v:IsA('BasePart') and v.Name == 'Head' then
+                local BillboardGui = Instance.new('BillboardGui')
+                BillboardGui.Name = 'NameESP'
+                BillboardGui.AlwaysOnTop = true
+                BillboardGui.Size = UDim2.new(1, 80, 1, 8)
+                BillboardGui.Adornee = v
+                BillboardGui.Parent = v
+
+                local TextLabel = Instance.new('TextLabel')
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                TextLabel.Font = Enum.Font.Code
+                TextLabel.Text = model.Parent.Name..' '..model.Name
+                TextLabel.TextColor3 = color
+                TextLabel.TextScaled = true
+                TextLabel.Parent = BillboardGui
+            end
+
             if v:IsA('BasePart') and v.Transparency == 0 and not v:FindFirstChild('ESP') then
                 local ESP = Instance.new('BoxHandleAdornment')
                 ESP.Name = 'ESP'
@@ -98,6 +116,10 @@ local function RemoveESP(model)
     if model.Torso:FindFirstChild('ESP') then
         for i, v in pairs(model:GetDescendants()) do
             if v:IsA('BoxHandleAdornment') and v.Name == 'ESP' then
+                v:Destroy()
+            end
+
+            if v:IsA('BillboardGui') and v.Name == 'NameESP' then
                 v:Destroy()
             end
         end
