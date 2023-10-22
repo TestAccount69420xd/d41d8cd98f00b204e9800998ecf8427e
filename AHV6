@@ -31,7 +31,6 @@ getgenv().SettingsTable = {
     WaterNoclip = false,
     Noclip = false,
     CClickTP = false,
-    HoldFDig = false,
     InfJump = false,
     FreeCam = {Enabled = false, FreeCamSpeed = 2},
     Fly = {Enabled = false, FlySpeed = 1},
@@ -269,7 +268,7 @@ game:GetService('UserInputService').InputBegan:Connect(function(key, gameProcess
     end
 
     -- Hold F To Dig
-    if key.KeyCode == Enum.KeyCode.F and SettingsTable.HoldFDig == true then
+    if key.KeyCode == Enum.KeyCode.F and HumCheck() == true then
         while game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.F) do
             game:GetService('ReplicatedStorage').Remotes.Dig:FireServer(Mouse.Hit.p, 'Flatten')
             task.wait()
@@ -496,6 +495,7 @@ HomeTab_Info:CreateLabel('⚠️ WARNING ⚠️\nDon\'t set some values that mak
 HomeTab_LoadedScripts:CreateLabel('Anti AFK')
 HomeTab_LoadedScripts:CreateLabel('Anti Camera Glitch')
 HomeTab_LoadedScripts:CreateLabel('Anti Food Grabbing Glitch')
+HomeTab_LoadedScripts:CreateLabel('Hold F To Dig')
 
 --// PLAYER TAB
 PlayerTab_Ant:CreateTextBox('Heavy Bite Charge Time', 'Type \'re\' to reset to default', false, function(val)
@@ -578,10 +578,6 @@ end)
 
 PlayerTab_Ant:CreateToggle('Infinite Camera Zoom Distance', false, function(val)
     SettingsTable.InfCameraZoom = val
-end)
-
-PlayerTab_Ant:CreateToggle('Hold F To Dig', false, function(val)
-    SettingsTable.HoldFDig = val
 end)
 
 local FreeCamBind = PlayerTab_Ant:CreateToggle('FreeCam', false, function(val)
@@ -747,16 +743,20 @@ FarmTab_BLarvae:CreateToggle('Beetle Larvae Farm', false, function(val)
                     if SettingsTable.PlayerFarm.Enabled == false then
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
                         if LP.Character.HumanoidRootPart.Position.Y > -90 then
-                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) - Vector3.new(0, 1, 0)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) - Vector3.new(0, 2, 0)
                         elseif LP.Character.HumanoidRootPart.Position.Y < -95 then
-                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) + Vector3.new(0, 1, 0)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) + Vector3.new(0, 2, 0)
                         end
                     end
                 else
                     while ClosestBLarvae ~= nil and SettingsTable.BeetleLarvaeFarm.Enabled == true and RootCheck() == true and ClosestBLarvae:FindFirstChild('Humanoid') and ClosestBLarvae:FindFirstChild('HumanoidRootPart') and ClosestBLarvae.HumanoidRootPart.Position.Y > -100 do
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-                        LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
-                        LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -2)
+                        if (LP.Character.HumanoidRootPart.Position - ClosestBLarvae.HumanoidRootPart.Position).Magnitude > 25 then
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
+                            LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+                        else
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestBLarvae.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
+                        end
                         BiteRemote:FireServer('heavy', ClosestBLarvae.Humanoid)
                         game:GetService('RunService').Heartbeat:Wait()
                     end
@@ -804,15 +804,23 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
                 if ClosestPlayer == nil then
                     LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
                     if LP.Character.HumanoidRootPart.Position.Y > -90 then
-                        LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) - Vector3.new(0, 1, 0)
+                        LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) - Vector3.new(0, 2, 0)
                     elseif LP.Character.HumanoidRootPart.Position.Y < -95 then
-                        LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) + Vector3.new(0, 1, 0)
+                        LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) + Vector3.new(0, 2, 0)
                     end
                 else
                     while ClosestPlayer ~= nil and SettingsTable.PlayerFarm.Enabled == true and RootCheck() == true and ClosestPlayer.Character ~= nil and ClosestPlayer.Character:FindFirstChild('Humanoid') and ClosestPlayer.Character:FindFirstChild('HumanoidRootPart') and ClosestPlayer.Character.HumanoidRootPart.Position.Y > -100 do
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-                        LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
-                        LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -2)
+                        if (LP.Character.HumanoidRootPart.Position - ClosestPlayer.Character.HumanoidRootPart.Position).Magnitude > 25 then
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
+                            LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+                        else
+                            if ClosestPlayer.Character:FindFirstChild('Wings') then
+                                LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position)
+                            else
+                                LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
+                            end
+                        end
                         BiteRemote:FireServer('heavy', ClosestPlayer.Character.Humanoid)
                         game:GetService('RunService').Heartbeat:Wait()
                     end
