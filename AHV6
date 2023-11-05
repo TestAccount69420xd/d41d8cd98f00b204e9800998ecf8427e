@@ -2,7 +2,7 @@
     AntHaxx V6 Official
     
     Game: Ant Life V2 (https://www.roblox.com/games/2628115891)
-    AntHaxx Loader: loadstring(game:HttpGet('https://pastebin.com/raw/9MWb13Yz'))()
+    AntHaxx Loader: loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/AHV6'))()
     Discord: https://discord.gg/ancT7xZ9Ty
 ]]
 
@@ -12,7 +12,7 @@ if game.GameId == 943242049 then else return end
 local UIConfig = {
     WindowName = 'AntHaxx V6 | Ant Life V2',
 	Color = Color3.fromRGB(255, 0, 0),
-	Keybind = Enum.KeyCode.Semicolon
+	Keybind = Enum.KeyCode.One
 }
 
 local UILibrary = loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/bracketUI_backup'))()
@@ -145,11 +145,15 @@ local function RemoveESP(model)
     end
 end
 
-local AutofarmAntiFallPart = Instance.new('Part')
-AutofarmAntiFallPart.Anchored = true
-AutofarmAntiFallPart.Size = Vector3.new(100, 1, 100)
-AutofarmAntiFallPart.CFrame = CFrame.new(0, -100, 0)
-AutofarmAntiFallPart.Parent = workspace
+local function FlyHandler()
+    if LP.Character.Humanoid.Jump == true then
+        return LP.Character.Humanoid.MoveDirection + Vector3.new(0, SettingsTable.Fly.FlySpeed / 2, 0)
+    elseif game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.LeftShift) then
+        return LP.Character.Humanoid.MoveDirection - Vector3.new(0, SettingsTable.Fly.FlySpeed / 2, 0)
+    else
+       return LP.Character.Humanoid.MoveDirection 
+    end
+end
 
 LP.Idled:Connect(function()
 
@@ -159,7 +163,20 @@ LP.Idled:Connect(function()
 
 end)
 
+LP.Chatted:Connect(function(msg)
+    local MessageLowered = string.lower(msg)
+    local Args = string.split(MessageLowered, ' ')
+
+    -- Announcement Prefix
+    if Args[1] == '/a' then
+        game:GetService('ReplicatedStorage').Remotes.StartVote:FireServer('Shoutout', '', string.sub(msg, 3))
+    end
+
+end)
+
 LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Frame_MessageLogDisplay.Scroller.ChildAdded:Connect(function(child)
+
+    -- Chat Color Coding
     if child:IsA('Frame') then
         child:WaitForChild('TextLabel'):WaitForChild('TextButton')
 
@@ -186,6 +203,7 @@ LP.PlayerGui.Chat.Frame.ChatChannelParentFrame.Frame_MessageLogDisplay.Scroller.
             end
         end
     end
+
 end)
 
 Mouse.Button1Down:Connect(function()
@@ -200,6 +218,12 @@ Mouse.Button1Down:Connect(function()
         task.wait(0.1)
         for i, v in pairs(LP.Character.Carrier:GetChildren()) do
             if v:IsA('Weld') and v.Name == 'Carry' then
+                v:Destroy()
+            end
+        end
+
+        for i, v in pairs(LP.Character.Head:GetChildren()) do
+            if v:IsA('BallSocketConstraint') and v.Name == 'Carry' then
                 v:Destroy()
             end
         end
@@ -251,37 +275,6 @@ game:GetService('UserInputService').InputBegan:Connect(function(key, gameProcess
                 workspace:WaitForChild('FreeCamPos').CFrame = CFrame.new(workspace:WaitForChild('FreeCamPos').CFrame.Position, workspace:WaitForChild('FreeCamPos').CFrame.Position + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, workspace.CurrentCamera.CFrame.LookVector.Y, workspace.CurrentCamera.CFrame.LookVector.Z))
                 workspace:WaitForChild('FreeCamPos').CFrame = workspace:WaitForChild('FreeCamPos').CFrame * CFrame.new(SettingsTable.FreeCam.FreeCamSpeed, 0, 0)
                 workspace.CurrentCamera.CFrame = workspace:WaitForChild('FreeCamPos').CFrame
-                task.wait()
-            end
-        end
-    end
-
-    -- Fly1
-    if SettingsTable.Fly.Enabled == true and SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false and RootCheck() == true and HumCheck() == true then
-        if key.KeyCode == Enum.KeyCode.W then
-            while game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.W) and SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false do
-                LP.Character:SetPrimaryPartCFrame(LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -SettingsTable.Fly.FlySpeed))
-                task.wait()
-            end
-        end
-
-        if key.KeyCode == Enum.KeyCode.S then
-            while game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.S) and SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false do
-                LP.Character:SetPrimaryPartCFrame(LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, SettingsTable.Fly.FlySpeed))
-                task.wait()
-            end
-        end
-
-        if key.KeyCode == Enum.KeyCode.A then
-            while game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.A) and SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false do
-                LP.Character:SetPrimaryPartCFrame(LP.Character.HumanoidRootPart.CFrame * CFrame.new(-SettingsTable.Fly.FlySpeed, 0, 0))
-                task.wait()
-            end
-        end
-
-        if key.KeyCode == Enum.KeyCode.D then
-            while game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.D) and SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false do
-                LP.Character:SetPrimaryPartCFrame(LP.Character.HumanoidRootPart.CFrame * CFrame.new(SettingsTable.Fly.FlySpeed, 0, 0))
                 task.wait()
             end
         end
@@ -373,7 +366,7 @@ game:GetService('RunService').RenderStepped:Connect(function()
         end
     end
 
-    -- Fly2
+    -- Fly
     if SettingsTable.Fly.Enabled == true and SettingsTable.PlayerFarm.Enabled == false and SettingsTable.BeetleLarvaeFarm.Enabled == false and RootCheck() == true and HumCheck() == true then
         if not LP.Character.HumanoidRootPart:FindFirstChild('FlightVelocity') then
             local FlightVelocity = Instance.new('BodyVelocity')
@@ -383,12 +376,26 @@ game:GetService('RunService').RenderStepped:Connect(function()
             FlightVelocity.Parent = LP.Character.HumanoidRootPart
         end
 
-        LP.Character.Humanoid.PlatformStand = true
-        LP.Character:SetPrimaryPartCFrame(CFrame.new(LP.Character.HumanoidRootPart.CFrame.Position, LP.Character.HumanoidRootPart.CFrame.Position + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, workspace.CurrentCamera.CFrame.LookVector.Y, workspace.CurrentCamera.CFrame.LookVector.Z)))
+        if not LP.Character.HumanoidRootPart:FindFirstChild('FlightGyro') then
+            local FlightGyro = Instance.new('BodyGyro')
+            FlightGyro.Name = 'FlightGyro'
+            FlightGyro.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+            FlightGyro.D = 100
+            FlightGyro.P = 3000
+            FlightGyro.Parent = LP.Character.HumanoidRootPart
+        end
+
+        LP.Character.HumanoidRootPart:WaitForChild('FlightVelocity').Velocity = FlyHandler() * SettingsTable.Fly.FlySpeed * 100
+        LP.Character.HumanoidRootPart.FlightGyro.CFrame = CFrame.new(LP.Character.HumanoidRootPart.CFrame.Position, LP.Character.HumanoidRootPart.CFrame.Position + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, workspace.CurrentCamera.CFrame.LookVector.Y, workspace.CurrentCamera.CFrame.LookVector.Z))
     else
-        if RootCheck() == true and HumCheck() == true and LP.Character.HumanoidRootPart:FindFirstChild('FlightVelocity') then
-            LP.Character.HumanoidRootPart.FlightVelocity:Destroy()
-            LP.Character.Humanoid.PlatformStand = false
+        if RootCheck() == true and HumCheck() == true then
+            if LP.Character.HumanoidRootPart:FindFirstChild('FlightVelocity') then
+                LP.Character.HumanoidRootPart.FlightVelocity:Destroy()
+            end
+
+            if LP.Character.HumanoidRootPart:FindFirstChild('FlightGyro') then
+                LP.Character.HumanoidRootPart.FlightGyro:Destroy()
+            end
         end
     end
 
@@ -475,6 +482,10 @@ game:GetService('RunService').RenderStepped:Connect(function()
 
 end)
 
+if workspace.Spawns:FindFirstChildOfClass('SpawnLocation') then
+    workspace.Spawns:FindFirstChildOfClass('SpawnLocation'):Destroy()
+end
+
 --// TABS
 local HomeTab = Window:CreateTab('Home')
 local PlayerTab = Window:CreateTab('Player Cheats')
@@ -509,13 +520,14 @@ local SettingsTab_Other = SettingsTab:CreateSection('Other Settings')
 
 --// HOME TAB
 HomeTab_Info:CreateLabel('Game\nAnt Life V2\n')
-HomeTab_Info:CreateLabel('Script Version\n6.4')
+HomeTab_Info:CreateLabel('Script Version\n6.5')
 HomeTab_Info:CreateLabel('⚠️ WARNING ⚠️\nDon\'t set some values that make you\ngo fast too high, or you may be\nkicked for teleporting')
 
 HomeTab_LoadedScripts:CreateLabel('Anti AFK')
 HomeTab_LoadedScripts:CreateLabel('Anti Camera Glitch')
 HomeTab_LoadedScripts:CreateLabel('Anti Food Grabbing Glitch')
 HomeTab_LoadedScripts:CreateLabel('Hold F To Dig')
+HomeTab_LoadedScripts:CreateLabel('\'/a\' Announcement Prefix')
 
 --// PLAYER TAB
 PlayerTab_Ant:CreateTextBox('Heavy Bite Charge Time', 'Type \'re\' to reset to default', false, function(val)
@@ -622,6 +634,7 @@ FlyBind = PlayerTab_Ant:CreateToggle('Fly', false, function(val)
 end)
 
 FlyBind:CreateKeybind(tostring('V'):gsub('Enum.KeyCode.', ''), function(key) end)
+FlyBind:AddToolTip('Space = Up | LeftShift = Down')
 
 PlayerTab_Ant:CreateTextBox('Fly Speed', 'Type \'re\' to reset to default', false, function(val)
     if val == 're' then
@@ -747,7 +760,7 @@ FarmTab_BLarvae:CreateToggle('Beetle Larvae Farm', false, function(val)
 
             if RootCheck() == true and SettingsTable.PlayerFarm.TargetLocked == false then
                 for i, v in pairs(workspace.AIC:GetChildren()) do
-                    if v:FindFirstChild('HumanoidRootPart') and v:FindFirstChild('Humanoid') and v.HumanoidRootPart.Position.Y > -100 then
+                    if v:FindFirstChild('HumanoidRootPart') and v:FindFirstChild('Humanoid') and v.HumanoidRootPart.Position.Y > -400 then
                         SettingsTable.BeetleLarvaeFarm.TargetLocked = true
 
                         local ClosestBLarvaeDist = (LP.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude
@@ -769,11 +782,12 @@ FarmTab_BLarvae:CreateToggle('Beetle Larvae Farm', false, function(val)
                         end
                     end
                 else
-                    while ClosestBLarvae ~= nil and SettingsTable.BeetleLarvaeFarm.Enabled == true and RootCheck() == true and ClosestBLarvae:FindFirstChild('Humanoid') and ClosestBLarvae:FindFirstChild('HumanoidRootPart') and ClosestBLarvae.HumanoidRootPart.Position.Y > -100 do
+                    while ClosestBLarvae ~= nil and SettingsTable.BeetleLarvaeFarm.Enabled == true and RootCheck() == true and ClosestBLarvae:FindFirstChild('Humanoid') and ClosestBLarvae:FindFirstChild('HumanoidRootPart') and ClosestBLarvae.HumanoidRootPart.Position.Y > -400 do
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
                         if (LP.Character.HumanoidRootPart.Position - ClosestBLarvae.HumanoidRootPart.Position).Magnitude > 25 then
                             LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
                             LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position)
                         else
                             LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestBLarvae.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
                         end
@@ -803,7 +817,7 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
 
             if RootCheck() == true and SettingsTable.BeetleLarvaeFarm.TargetLocked == false then
                 for i, v in pairs(game:GetService('Players'):GetPlayers()) do
-                    if v.Character ~= nil and v.Character:FindFirstChild('HumanoidRootPart') and v.Character.HumanoidRootPart.Position.Y > -100 and v.Character:FindFirstAncestorWhichIsA('Folder') and LP.Character:FindFirstAncestorWhichIsA('Folder') ~= LP.Character:FindFirstAncestorWhichIsA('Folder') then
+                    if v.Character ~= nil and v.Character:FindFirstChild('HumanoidRootPart') and v.Character.HumanoidRootPart.Position.Y > -400 and v.Character:FindFirstAncestorWhichIsA('Folder') and v.Character:FindFirstAncestorWhichIsA('Folder') ~= LP.Character:FindFirstAncestorWhichIsA('Folder') then
                         if SettingsTable.PlayerFarm.IgnoreCarp == true and v.Character:IsDescendantOf(workspace.Ant['Carpenter Ant']) then continue end
                         if SettingsTable.PlayerFarm.IgnoreFire == true and v.Character:IsDescendantOf(workspace.Ant['Fire Ant']) then continue end
                         if SettingsTable.PlayerFarm.IgnoreYCA == true and v.Character:IsDescendantOf(workspace.Ant['Yellow Crazy Ant']) then continue end
@@ -829,11 +843,12 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
                         LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) + Vector3.new(0, 2, 0)
                     end
                 else
-                    while ClosestPlayer ~= nil and SettingsTable.PlayerFarm.Enabled == true and RootCheck() == true and ClosestPlayer.Character ~= nil and ClosestPlayer.Character:FindFirstChild('Humanoid') and ClosestPlayer.Character:FindFirstChild('HumanoidRootPart') and ClosestPlayer.Character.HumanoidRootPart.Position.Y > -100 do
+                    while ClosestPlayer ~= nil and SettingsTable.PlayerFarm.Enabled == true and RootCheck() == true and ClosestPlayer.Character ~= nil and ClosestPlayer.Character:FindFirstChild('Humanoid') and ClosestPlayer.Character:FindFirstChild('HumanoidRootPart') and ClosestPlayer.Character.HumanoidRootPart.Position.Y > -400 do
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
                         if (LP.Character.HumanoidRootPart.Position - ClosestPlayer.Character.HumanoidRootPart.Position).Magnitude > 25 then
                             LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
                             LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position)
                         else
                             if ClosestPlayer.Character:FindFirstChild('Wings') then
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position)
