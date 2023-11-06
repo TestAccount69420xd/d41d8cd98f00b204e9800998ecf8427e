@@ -787,9 +787,10 @@ FarmTab_BLarvae:CreateToggle('Beetle Larvae Farm', false, function(val)
                         if (LP.Character.HumanoidRootPart.Position - ClosestBLarvae.HumanoidRootPart.Position).Magnitude > 25 then
                             LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
                             LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
-                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.X), math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.Y), math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.Z))
                         else
                             LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestBLarvae.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.X), math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.Y), math.rad(ClosestBLarvae.HumanoidRootPart.Orientation.Z))
                         end
                         BiteRemote:FireServer('heavy', ClosestBLarvae.Humanoid)
                         game:GetService('RunService').Heartbeat:Wait()
@@ -848,12 +849,13 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
                         if (LP.Character.HumanoidRootPart.Position - ClosestPlayer.Character.HumanoidRootPart.Position).Magnitude > 25 then
                             LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position - Vector3.new(0, 20, 0))
                             LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
-                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position)
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.X), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Y), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Z))
                         else
                             if ClosestPlayer.Character:FindFirstChild('Wings') then
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position)
                             else
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
+                                LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.X), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Y), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Z))
                             end
                         end
                         BiteRemote:FireServer('heavy', ClosestPlayer.Character.Humanoid)
