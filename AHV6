@@ -3,7 +3,7 @@
     
     Game: Ant Life V2 (https://www.roblox.com/games/2628115891)
     AntHaxx Loader: loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/rblx_storage/main/AHV6'))()
-    Discord: https://discord.gg/ancT7xZ9Ty
+    Discord: https://discord.gg/anfCx638Fh
 ]]
 
 if not game:IsLoaded() then game.Loaded:Wait() end
@@ -521,7 +521,7 @@ local SettingsTab_Other = SettingsTab:CreateSection('Other Settings')
 --// HOME TAB
 HomeTab_Info:CreateLabel('Game\nAnt Life V2\n')
 HomeTab_Info:CreateLabel('Script Version\n6.5\n')
-HomeTab_Info:CreateLabel('Discord Server\ndiscord.gg/ancT7xZ9Ty\n')
+HomeTab_Info:CreateLabel('Discord Server\ndiscord.gg/anfCx638Fh\n')
 HomeTab_Info:CreateLabel('⚠️ WARNING ⚠️\nDon\'t set some values that make you\ngo fast too high, or you may be\nkicked for teleporting')
 
 HomeTab_LoadedScripts:CreateLabel('Anti AFK')
