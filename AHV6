@@ -520,7 +520,8 @@ local SettingsTab_Other = SettingsTab:CreateSection('Other Settings')
 
 --// HOME TAB
 HomeTab_Info:CreateLabel('Game\nAnt Life V2\n')
-HomeTab_Info:CreateLabel('Script Version\n6.5')
+HomeTab_Info:CreateLabel('Script Version\n6.5\n')
+HomeTab_Info:CreateLabel('Discord Server\ndiscord.gg/ancT7xZ9Ty\n')
 HomeTab_Info:CreateLabel('⚠️ WARNING ⚠️\nDon\'t set some values that make you\ngo fast too high, or you may be\nkicked for teleporting')
 
 HomeTab_LoadedScripts:CreateLabel('Anti AFK')
@@ -853,6 +854,7 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
                         else
                             if ClosestPlayer.Character:FindFirstChild('Wings') then
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position)
+                                LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.X), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Y), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Z))
                             else
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position) - Vector3.new(0, 20, 0)
                                 LP.Character.HumanoidRootPart.CFrame = CFrame.new(LP.Character.HumanoidRootPart.Position) * CFrame.Angles(math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.X), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Y), math.rad(ClosestPlayer.Character.HumanoidRootPart.Orientation.Z))
