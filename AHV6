@@ -411,7 +411,7 @@ game:GetService('RunService').RenderStepped:Connect(function()
         -- Leaving On Mod Join
         if SettingsTable.LeaveOnModJoin == true then
             pcall(function()
-                if v:GetRankInGroup(4525406) > 6 then
+                if v:GetRankInGroup(4525406) > 7 then
                     LP:Destroy()
                 end
             end)
