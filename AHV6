@@ -785,7 +785,7 @@ FarmTab_BLarvae:CreateToggle('Beetle Larvae Farm', false, function(val)
                 else
                     while ClosestBLarvae ~= nil and SettingsTable.BeetleLarvaeFarm.Enabled == true and RootCheck() == true and ClosestBLarvae:FindFirstChild('Humanoid') and ClosestBLarvae:FindFirstChild('HumanoidRootPart') and ClosestBLarvae.HumanoidRootPart.Position.Y > -400 do
                         LP.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-                        LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), -20, math.random(-10, 10)))
+                        LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), -25, math.random(-10, 10)))
                         LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
                         LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestBLarvae.HumanoidRootPart.Position)
                         BiteRemote:FireServer('heavy', ClosestBLarvae.Humanoid)
@@ -845,7 +845,7 @@ FarmTab_PlayerFarm:CreateToggle('Player Farm', false, function(val)
                         if ClosestPlayer.Character:FindFirstChild('Wings') then
                             LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), 20, math.random(-10, 10)))
                         else
-                            LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), -20, math.random(-10, 10)))
+                            LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), -25, math.random(-10, 10)))
                         end
                         LP.Character.HumanoidRootPart.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
                         LP.Character.HumanoidRootPart.CFrame = CFrame.lookAt(LP.Character.HumanoidRootPart.Position, ClosestPlayer.Character.HumanoidRootPart.Position)
