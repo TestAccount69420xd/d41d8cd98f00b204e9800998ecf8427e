@@ -147,6 +147,23 @@ local function LarvaeCheck()
 	end
 end
 
+local function FlyHandler()
+    if HumCheck() == false then
+        return Vector3.zero
+    end
+
+	if LP.Character.Humanoid.MoveDirection == Vector3.zero then
+		return LP.Character.Humanoid.MoveDirection
+	end
+
+	local Direction = (workspace.CurrentCamera.CFrame * CFrame.new((CFrame.new(workspace.CurrentCamera.CFrame.p, workspace.CurrentCamera.CFrame.p + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, 0, workspace.CurrentCamera.CFrame.LookVector.Z)):VectorToObjectSpace(LP.Character.Humanoid.MoveDirection)))).p - workspace.CurrentCamera.CFrame.p
+	if Direction == Vector3.zero then
+		return Direction
+	end
+
+	return Direction.Unit
+end
+
 local function CreateESP(model, color)
     if not model.Torso:FindFirstChild('ESP') then
         for i, v in pairs(model:GetDescendants()) do
@@ -341,7 +358,7 @@ game:GetService('RunService').Heartbeat:Connect(function()
     end
 
     -- Fast Eat
-    if SettingsTable.FastEat == true and RootCheck() == true and (LP.Character:IsDescendantOf(workspace.Special.BroodMother) or LP.Character:WaitForChild('Configuration').Hunger.Value < LP.Character:WaitForChild('Configuration').maxHunger.Value) then
+    if SettingsTable.FastEat == true and RootCheck() == true and LP.Character:FindFirstChild('Configuration') and (LP.Character:IsDescendantOf(workspace.Special.BroodMother) or LP.Character.Configuration.Hunger.Value < LP.Character.Configuration.maxHunger.Value) then
         local OverlapParam = OverlapParams.new()
         OverlapParam.FilterDescendantsInstances = {}
         OverlapParam.FilterType = Enum.RaycastFilterType.Exclude
@@ -452,30 +469,8 @@ game:GetService('RunService').Heartbeat:Connect(function()
         FlightGyro.Parent = LP.Character.HumanoidRootPart
 
         LP.Character.Humanoid.PlatformStand = true
-
-        local Direction = Vector3.zero
-
-        if SettingsTable.FreeCam.Enabled == false then
-            if game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.W) then
-                Direction = LP.Character.HumanoidRootPart.CFrame.LookVector
-            end
-    
-            if game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.S) then
-                Direction = -LP.Character.HumanoidRootPart.CFrame.LookVector
-            end
-    
-            if game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.D) then
-                Direction = LP.Character.HumanoidRootPart.CFrame.RightVector
-            end
-    
-            if game:GetService('UserInputService'):IsKeyDown(Enum.KeyCode.A) then
-                Direction = -LP.Character.HumanoidRootPart.CFrame.RightVector
-            end
-
-            LP.Character.HumanoidRootPart.FlightGyro.CFrame = CFrame.new(LP.Character.HumanoidRootPart.CFrame.Position, LP.Character.HumanoidRootPart.CFrame.Position + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, workspace.CurrentCamera.CFrame.LookVector.Y, workspace.CurrentCamera.CFrame.LookVector.Z))
-        end
-
-        LP.Character.HumanoidRootPart.FlightVelocity.Velocity = Direction * (SettingsTable.Fly.FlySpeed * 10)
+        FlightVelocity.Velocity = FlyHandler() * (SettingsTable.Fly.FlySpeed * 10)
+        FlightGyro.CFrame = CFrame.new(LP.Character.HumanoidRootPart.CFrame.Position, LP.Character.HumanoidRootPart.CFrame.Position + Vector3.new(workspace.CurrentCamera.CFrame.LookVector.X, workspace.CurrentCamera.CFrame.LookVector.Y, workspace.CurrentCamera.CFrame.LookVector.Z))
 
         coroutine.wrap(function()
             game:GetService('RunService').Heartbeat:Wait()
