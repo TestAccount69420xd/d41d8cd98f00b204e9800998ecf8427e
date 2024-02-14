@@ -341,7 +341,7 @@ game:GetService('RunService').Heartbeat:Connect(function()
     end
 
     -- Fast Eat
-    if SettingsTable.FastEat == true and HumCheck() == true and LP.Character:FindFirstChild('Configuration') and LP.Character.Configuration:WaitForChild('Hunger').Value < LP.Character.Configuration:WaitForChild('maxHunger').Value then
+    if SettingsTable.FastEat == true and RootCheck() == true and (LP.Character:IsDescendantOf(workspace.Special.BroodMother) or LP.Character:WaitForChild('Configuration').Hunger.Value < LP.Character:WaitForChild('Configuration').maxHunger.Value) then
         local OverlapParam = OverlapParams.new()
         OverlapParam.FilterDescendantsInstances = {}
         OverlapParam.FilterType = Enum.RaycastFilterType.Exclude
@@ -350,11 +350,11 @@ game:GetService('RunService').Heartbeat:Connect(function()
         local PartsInRadius = workspace:GetPartBoundsInRadius(LP.Character.HumanoidRootPart.Position, Radius, OverlapParam)
 
 	    for i, v in ipairs(PartsInRadius) do
+            if not v:IsDescendantOf(workspace.Carcasses) then continue end
             if LP.Character:FindFirstChild('Carrier') and LP.Character.Carrier.Transparency == 0 then continue end
+            if LP.Character:IsDescendantOf(workspace.Special.BroodMother) and v:FindFirstAncestorWhichIsA('Model') and v:FindFirstAncestorWhichIsA('Model').Name ~= 'Spider' then continue end
 
-		    if v:IsDescendantOf(workspace.Carcasses) then
-			    BiteRemote:FireServer('light', v)
-		    end
+			BiteRemote:FireServer('light', v)
 	    end
     end
 
