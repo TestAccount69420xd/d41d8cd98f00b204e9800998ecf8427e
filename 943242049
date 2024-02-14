@@ -789,7 +789,7 @@ end
 local UIConfig = {
     WindowName = 'AntHaxx V6 | Ant Life V2',
 	Color = Color3.fromRGB(255, 0, 0),
-	Keybind = Enum.KeyCode.One
+	Keybind = Enum.KeyCode.LeftAlt
 }
 
 local UILibrary = loadstring(game:HttpGet('https://raw.githubusercontent.com/TestAccount69420xd/d41d8cd98f00b204e9800998ecf8427e/main/UI%20Library'))()
